@@ -75,7 +75,6 @@ const controlAddRecipe = async function (newRecipe) {
     addRecipeView.renderSpinner();
 
     await model.uploadRecipe(newRecipe);
-    console.log(model.state.recipe);
 
     recipeView.render(model.state.recipe);
 
@@ -87,7 +86,6 @@ const controlAddRecipe = async function (newRecipe) {
 
     setTimeout(() => addRecipeView.toggleWindow(), MODEL_CLOSE_SECONDS * 1000);
   } catch (error) {
-    console.error('💥', error);
     addRecipeView.renderError(error.message);
   }
 };
