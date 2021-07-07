@@ -3,18 +3,9 @@ import icons from 'url:../../img/icons.svg';
 export default class View {
   _data;
 
-  /**
-   * Render the received object to the DOM
-   * @param {Object | Object[]} data The data to be rendered (e.g. recipe)
-   * @param {boolean} [render=true] If false, create markup string instead of rendering to the markup
-   * @returns {undefined|string} A markup string is returned if render = false
-   * @this {Object} View instance
-   * @author Tofig Amraslanov
-   * @todo Finish implementation
-   */
+
   render(data, render = true) {
-    if (!data || (Array.isArray(data) && data.length === 0))
-      return this.renderError();
+    if (!data || (Array.isArray(data) && data.length === 0)) return this.renderError();
 
     this._data = data;
     const markup = this._generateMarkup();
@@ -31,24 +22,19 @@ export default class View {
 
     const newDOM = document.createRange().createContextualFragment(newMarkup);
     const newElements = Array.from(newDOM.querySelectorAll('*'));
-    const currentElements = Array.from(
-      this._parentElement.querySelectorAll('*')
-    );
+    const currentElements = Array.from(this._parentElement.querySelectorAll('*'));
 
     newElements.forEach((newElement, i) => {
       const currentElement = currentElements[i];
 
-      if (
-        !newElement.isEqualNode(currentElement) &&
-        newElement.firstChild?.nodeValue.trim() !== ''
-      ) {
+      // Updates changed TEXT
+      if (!newElement.isEqualNode(currentElement) && newElement.firstChild?.nodeValue.trim() !== '') {
         currentElement.textContent = newElement.textContent;
       }
 
+      // Updates changed ATTRIBUTES
       if (!newElement.isEqualNode(currentElement))
-        Array.from(newElement.attributes).forEach(attribute =>
-          currentElement.setAttribute(attribute.name, attribute.value)
-        );
+        Array.from(newElement.attributes).forEach(attribute => currentElement.setAttribute(attribute.name, attribute.value));
     });
   }
 
@@ -62,7 +48,7 @@ export default class View {
     `;
     this._parentElement.innerHTML = '';
     this._parentElement.insertAdjacentHTML('afterbegin', markup);
-  }
+  };
 
   renderError(message = this._errorMessage) {
     const markup = `
