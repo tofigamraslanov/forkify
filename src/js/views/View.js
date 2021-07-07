@@ -3,9 +3,9 @@ import icons from 'url:../../img/icons.svg';
 export default class View {
   _data;
 
-
   render(data, render = true) {
-    if (!data || (Array.isArray(data) && data.length === 0)) return this.renderError();
+    if (!data || (Array.isArray(data) && data.length === 0))
+      return this.renderError();
 
     this._data = data;
     const markup = this._generateMarkup();
@@ -22,19 +22,24 @@ export default class View {
 
     const newDOM = document.createRange().createContextualFragment(newMarkup);
     const newElements = Array.from(newDOM.querySelectorAll('*'));
-    const currentElements = Array.from(this._parentElement.querySelectorAll('*'));
+    const currentElements = Array.from(
+      this._parentElement.querySelectorAll('*')
+    );
 
     newElements.forEach((newElement, i) => {
       const currentElement = currentElements[i];
 
-      // Updates changed TEXT
-      if (!newElement.isEqualNode(currentElement) && newElement.firstChild?.nodeValue.trim() !== '') {
+      if (
+        !newElement.isEqualNode(currentElement) &&
+        newElement.firstChild?.nodeValue.trim() !== ''
+      ) {
         currentElement.textContent = newElement.textContent;
       }
 
-      // Updates changed ATTRIBUTES
       if (!newElement.isEqualNode(currentElement))
-        Array.from(newElement.attributes).forEach(attribute => currentElement.setAttribute(attribute.name, attribute.value));
+        Array.from(newElement.attributes).forEach(attribute =>
+          currentElement.setAttribute(attribute.name, attribute.value)
+        );
     });
   }
 
@@ -48,7 +53,7 @@ export default class View {
     `;
     this._parentElement.innerHTML = '';
     this._parentElement.insertAdjacentHTML('afterbegin', markup);
-  };
+  }
 
   renderError(message = this._errorMessage) {
     const markup = `
