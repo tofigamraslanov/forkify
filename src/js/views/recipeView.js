@@ -1,5 +1,7 @@
 import View from './View.js';
-import icons from 'url:../../img/icons.svg';
+
+// import icons from '../img/icons.svg'; // Parcel 1
+import icons from 'url:../../img/icons.svg'; // Parcel 2
 import { Fraction } from 'fractional';
 
 class RecipeView extends View {
@@ -7,6 +9,7 @@ class RecipeView extends View {
   _errorMessage = 'We could not find that recipe. Please try another one!';
   _message = '';
 
+  // Publisher
   addHandlerRender(handler) {
     ['hashchange', 'load'].forEach(event =>
       window.addEventListener(event, handler)
@@ -27,6 +30,15 @@ class RecipeView extends View {
     this._parentElement.addEventListener('click', function (e) {
       const btn = e.target.closest('.btn--bookmark');
       if (!btn) return;
+      handler();
+    });
+  }
+
+  addHandlerAddToShoppingList(handler) {
+    this._parentElement.addEventListener('click', function (e) {
+      const btn = e.target.closest('.recipe__btn--add');
+      if (!btn) return;
+
       handler();
     });
   }
@@ -98,7 +110,12 @@ class RecipeView extends View {
       <ul class='recipe__ingredient-list'>
         ${this._data.ingredients.map(this._generateMarkupIngredient).join('')}
       </ul>
-      <button type="button" class="recipe__add-to-shopping-list">Add to shopping list</button>
+      <button class="btn--small recipe__btn recipe__btn--add">
+        <svg class="search__icon">
+          <use href="${icons}#icon-shopping-cart"></use>
+        </svg>
+        <span>Add to shopping list</span>
+      </button>
     </div>
 
     <div class='recipe__directions'>
