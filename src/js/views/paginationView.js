@@ -22,21 +22,17 @@ class PaginationView extends View {
       this._data.results.length / this._data.resultsPerPage
     );
 
-    // Page 1, and there are other pages
     if (currentPage === 1 && numberOfPages > 1)
       return this._generateMarkupButtonNext(currentPage + 1);
 
-    // Last page
     if (currentPage === numberOfPages && numberOfPages > 1)
       return this._generateMarkupButtonPrev(currentPage - 1);
 
-    // Other page
     if (currentPage < numberOfPages)
       return `${this._generateMarkupButtonPrev(
         currentPage - 1
       )} ${this._generateMarkupButtonNext(currentPage + 1)}`;
 
-    // Page 1, and there are NO other pages
     return '';
   }
 

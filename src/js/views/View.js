@@ -29,7 +29,6 @@ export default class View {
     newElements.forEach((newElement, i) => {
       const currentElement = currentElements[i];
 
-      // Updates changed TEXT
       if (
         !newElement.isEqualNode(currentElement) &&
         newElement.firstChild?.nodeValue.trim() !== ''
@@ -37,7 +36,6 @@ export default class View {
         currentElement.textContent = newElement.textContent;
       }
 
-      // Updates changed ATTRIBUTES
       if (!newElement.isEqualNode(currentElement))
         Array.from(newElement.attributes).forEach(attribute =>
           currentElement.setAttribute(attribute.name, attribute.value)

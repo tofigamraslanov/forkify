@@ -38,7 +38,6 @@ export const loadRecipe = async function (id) {
       state.recipe.bookmarked = true;
     else state.recipe.bookmarked = false;
   } catch (error) {
-    console.error(`${error} 💥💥💥`);
     throw error;
   }
 };
@@ -59,7 +58,6 @@ export const loadSearchResults = async function (query) {
     });
     state.search.page = 1;
   } catch (error) {
-    console.error(`${error} 💥💥💥`);
     throw error;
   }
 };
@@ -73,7 +71,6 @@ export const getSearchResultsPage = function (page = state.search.page) {
 
 export const updateServings = function (newServings) {
   state.recipe.ingredients.forEach(ingredient => {
-    // newQuantity = oldQuantity * newServings / oldServings  // 2 * 8/4 = 4
     ingredient.quantity =
       (ingredient.quantity * newServings) / state.recipe.servings;
   });
@@ -86,21 +83,17 @@ const persistBookmarks = function () {
 };
 
 export const addBookmark = function (recipe) {
-  // Add bookmark
   state.bookmarks.push(recipe);
 
-  // Mark current recipe as bookmark
   if (recipe.id === state.recipe.id) state.recipe.bookmarked = true;
 
   persistBookmarks();
 };
 
 export const deleteBookmark = function (id) {
-  // Delete bookmark
   const index = state.bookmarks.findIndex(element => element.id === id);
   state.bookmarks.splice(index, 1);
 
-  // Mark current recipe as NOT bookmark
   if (id === state.recipe.id) state.recipe.bookmarked = false;
 
   persistBookmarks();
@@ -117,7 +110,6 @@ export const uploadRecipe = async function (newRecipe) {
     const ingredients = Object.entries(newRecipe)
       .filter(entry => entry[0].startsWith('ingredient') && entry[1] !== '')
       .map(ingredient => {
-        // const ingredientsArray = ingredient[1].replaceAll(' ', '').split(',');
         const ingredientsArray = ingredient[1].split(',').map(el => el.trim());
 
         if (ingredientsArray.length !== 3)
